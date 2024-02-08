@@ -1,27 +1,34 @@
-import React from 'react'
-import axios from 'axios'
+import React, { useEffect } from 'react'
+import useRequest from '../hooks/useRequest'
 
-type SignInResponseType = {
+export type SignInResponseType = {
   "authToken": string
 }
-type HandleSignInType = {
-  handleSignIn: (e: React.FormEvent<HTMLFormElement>) => Promise<void>
-}
 
-export const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault()
-  const formData = new FormData(e.currentTarget)
-  const data = Object.fromEntries(formData)
-  const resp = await axios.post<SignInResponseType>('https://192.168.56.101:3000/signin', {
-    username: data.username,
-    password: data.password,
-  })
-  if((resp.status === 200) && ("authToken" in resp.data)){
-    localStorage.setItem("authToken", resp.data.authToken)
+export default function SignIn() {
+  const {request, data, isLoading, errorStatus} = useRequest()
+
+  useEffect(()=>{
+    if(isLoading === false && errorStatus === '' && data){
+      localStorage.setItem("authToken", data.authToken)
+    }
+  }, [isLoading, errorStatus, data])
+
+  const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    const formData = new FormData(e.currentTarget)
+    const data = Object.fromEntries(formData)
+
+    await request('http://localhost:3000/signin', {
+      method: 'POST',
+      body: {
+        username: data.username,
+        password: data.password,
+      }
+    })
   }
-}
 
-export default function SignIn({handleSignIn}: HandleSignInType) {
   return (
     <form onSubmit={handleSignIn}>
       <label htmlFor="username">Username</label>

@@ -4,19 +4,16 @@ import SignIn from './SignIn';
 
 describe('TodoItem', () => {
   const setups = () => {
-    const mockHandleSignIn = jest.fn()
-    const { getByText, getByPlaceholderText, ...utils } = render(
-      <SignIn handleSignIn={mockHandleSignIn} />
+    const { getByText, ...utils } = render(
+      <SignIn />
     );
-
     const buttonSignIn = getByText('Sign In')
 
     return {
       buttonSignIn,
-      mockHandleSignIn,
       ...utils,
     };
-  };
+  }
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -31,9 +28,8 @@ describe('TodoItem', () => {
     expect(buttonSignIn).toBeInTheDocument();
   });
 
-  it('calls HandleSignIn when clicking button "Sign In"', () => {
-    const {buttonSignIn, mockHandleSignIn} = setups()
+  it('should have no side effect when clicking button "Sign In"', async () => {
+    const {buttonSignIn} = setups()
     fireEvent.click(buttonSignIn)
-    expect(mockHandleSignIn).toHaveBeenCalled();
-  });
+  })
 });

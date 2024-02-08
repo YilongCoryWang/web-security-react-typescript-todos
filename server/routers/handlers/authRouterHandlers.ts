@@ -3,7 +3,6 @@ import { randomBytes } from 'node:crypto'
 export const signinHandler = (req, res)=>{
     try{
         const authToken = randomBytes(64).toString('hex');
-        console.debug(authToken)
         res.cookie('authToken', authToken, {
             maxAge: 300000,
             httpOnly: true,

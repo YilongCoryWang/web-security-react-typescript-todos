@@ -1,7 +1,7 @@
 import TodoLayout from '../layouts/TodoLayout'
 import AccountLayout from '../layouts/AccountLayout'
 import Todo from '../pages/Todo'
-import SignIn, {handleSignIn} from '../pages/SignIn'
+import SignIn from '../pages/SignIn'
 import SignUp from '../pages/SignUp'
 
 const routers = [{
@@ -16,7 +16,7 @@ const routers = [{
     element: <AccountLayout />,
     children: [{
         path: '/auth/signin',
-        element: <SignIn handleSignIn={handleSignIn} />,
+        element: <SignIn />,
     }, {
         path: '/auth/signup',
         element: <SignUp />,
